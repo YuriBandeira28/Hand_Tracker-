@@ -36,7 +36,7 @@ while True:
             mpDraw.draw_landmarks(img, points, hand.HAND_CONNECTIONS)
             for id, cord in enumerate(points.landmark):
                 cx, cy = int(cord.x * w),int(cord.y * h)
-                cv2.putText(img, str(id), (cx, cy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
+                #cv2.putText(img, str(id), (cx, cy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
                 pontos.append((cx, cy))
 
         x1, y1 = pontos[4][0], pontos[4][1]
@@ -44,19 +44,21 @@ while True:
         
         cx, cy = (x1+x2) // 2, (y1 + y2) // 2
         
+
+        
+
         cv2.circle(img, (x1,y1), 5, (255,0,0), cv2.FILLED)
         cv2.circle(img, (x2,y2), 5, (255,0,0), cv2.FILLED)
         cv2.line(img, (x1,y1), (x2,y2), (255,0,255), 3)
         
         length = math.hypot(x2 - x1, y2 -y2)
         
-
         vol = np.interp(length, [50, 300], [minVol, maxVol])
         volume.SetMasterVolumeLevel(vol, None)
-        
+
         if length < 50:
             cv2.circle(img, (cx,cy), 5, (0,255,0), cv2.FILLED)
-            
+                
             
 
     cv2.imshow("Image", img)
