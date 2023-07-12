@@ -4,14 +4,14 @@ import math
 import numpy as np
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-
+import pyautogui
 video = cv2.VideoCapture(0)
 
 hand = mp.solutions.hands
 Hand = hand.Hands(max_num_hands=2)
 mpDraw = mp.solutions.drawing_utils
 
-
+"""
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(
     IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
@@ -21,8 +21,11 @@ volume = interface.QueryInterface(IAudioEndpointVolume)
 volRange = volume.GetVolumeRange()
 minVol = volRange[0]
 maxVol = volRange[1]
+"""
+direcao = None
 
 while True:
+#def cam():
     check, img = video.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = Hand.process(imgRGB)
@@ -36,16 +39,36 @@ while True:
             mpDraw.draw_landmarks(img, points, hand.HAND_CONNECTIONS)
             for id, cord in enumerate(points.landmark):
                 cx, cy = int(cord.x * w),int(cord.y * h)
-                #cv2.putText(img, str(id), (cx, cy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
+                cv2.putText(img, str(id), (cx, cy+10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 2)
                 pontos.append((cx, cy))
 
+        if pontos[4][0] > pontos[17][0] and pontos[4][0] > pontos[3][0]:
+            direcao = "A" #move para a esquerda
+            pyautoagui.press("a")
+
+        elif pontos[4][0] < pontos[17][0] and pontos[4][0] < pontos[3][0]:
+            direcao = "D" #move para a direita
+            pyautogui.press("d")
+
+        elif pontos[8][1] < pontos[0][1] and pontos[8][1] < pontos[6][1]:
+            direcao = "W" #move para cima
+            pyautogui.press("w")
+
+        elif pontos[8][1] > pontos[0][1] and pontos[8][1] > pontos[6][1]:
+            direcao = "S" #move para a baixo
+            pyautogui.press("s")
+
+        else:
+            direcao = None
+        
+        cv2.putText(img, direcao, (10, 150),  cv2.FONT_HERSHEY_SIMPLEX, 5, (255,0,0), 2)
+        
+        #return direcao
+        """
         x1, y1 = pontos[4][0], pontos[4][1]
         x2, y2 = pontos[8][0], pontos[8][1]
         
         cx, cy = (x1+x2) // 2, (y1 + y2) // 2
-        
-
-        
 
         cv2.circle(img, (x1,y1), 5, (255,0,0), cv2.FILLED)
         cv2.circle(img, (x2,y2), 5, (255,0,0), cv2.FILLED)
@@ -58,8 +81,8 @@ while True:
 
         if length < 50:
             cv2.circle(img, (cx,cy), 5, (0,255,0), cv2.FILLED)
-                
-            
+        """ 
+        
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)
