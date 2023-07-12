@@ -44,7 +44,7 @@ while True:
 
         if pontos[4][0] > pontos[17][0] and pontos[4][0] > pontos[3][0]:
             direcao = "A" #move para a esquerda
-            pyautoagui.press("a")
+            pyautogui.press("a")
 
         elif pontos[4][0] < pontos[17][0] and pontos[4][0] < pontos[3][0]:
             direcao = "D" #move para a direita
