@@ -23,7 +23,6 @@ maxVol = volRange[1]
 direcao = None
 
 while True:
-#def cam():
     check, img = video.read()
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = Hand.process(imgRGB)
@@ -31,6 +30,7 @@ while True:
     handsPoints = results.multi_hand_landmarks
     h, w, _ = img.shape 
     pontos = []
+
     if handsPoints:
         for points in handsPoints:
             print(points)
